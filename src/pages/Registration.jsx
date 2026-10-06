@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
 import { Link, useLoaderData, useNavigate } from 'react-router-dom';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { ToastContainer, toast } from 'react-toastify';
 import { ThreeCircles } from 'react-loader-spinner'
 
@@ -57,6 +57,7 @@ const Registration = () => {
            setLoader(true)
       createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
+          sendEmailVerification(auth.currentUser)
           toast("Registration Successfull")
           setTimeout(() => {
             navigate('/login')
