@@ -11,7 +11,9 @@ const RootLayout = () => {
         </Grid>
     
         <Grid size={10}>
-          <Outlet/>
+          <div className='mr-9'>
+            <Outlet/>
+          </div>
         </Grid>
     
        </Grid>
