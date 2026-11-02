@@ -6,7 +6,7 @@ import { createSlice } from '@reduxjs/toolkit'
 export const activeuserSlice = createSlice({
     name:"active",
     initialState : {
-  value:"null"
+  value: localStorage.getItem("userinfo")?JSON.parse(localStorage.getItem("userinfo")) : null
 },
   
   reducers: {

@@ -1,11 +1,27 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Grid from '@mui/material/Grid';
 import Groupslist from './Layouts/Groupslist';
 import Friendlist from './Layouts/Friendlist';
 import UserList from './Layouts/UserList';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 
 const Home = () => {
+ let data = useSelector(state=>state.activeuser.value)
+ let navigate=useNavigate()
+
+ useEffect(()=>{
+
+  if(data==null){
+    
+   navigate("/Login")
+
+  }
+
+
+ },[])
+
   return (
      <Grid container spacing={2}>
 
