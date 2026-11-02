@@ -8,9 +8,13 @@ import { Link, useLoaderData, useNavigate } from 'react-router-dom';
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import { ToastContainer, toast } from 'react-toastify';
 import { ThreeCircles } from 'react-loader-spinner'
+import { getDatabase, push, ref, set } from "firebase/database";
+
+
 
 const Registration = () => {
   const auth = getAuth();
+  const db = getDatabase();
   const navigate = useNavigate()
 
   let [email, setEmail] = useState('')
@@ -54,20 +58,31 @@ const Registration = () => {
       setPasswordError('Enter Your Strong Password!');
     }
     if (email && regexemail.test(email) && name && password && regexpassword.test(password)) {
-           setLoader(true)
+      setLoader(true)
       createUserWithEmailAndPassword(auth, email, password)
+
         .then((userCredential) => {
           sendEmailVerification(auth.currentUser)
-          toast("Registration Successfull")
+          toast("Registration Successfull");
+
+          set(push(ref(db, 'allusers/')), {
+            name: name,
+            email: userCredential.user.email,
+           userid:userCredential.user.uid
+          })
+
+
           setTimeout(() => {
             navigate('/login')
           }, 2000)
-             setLoader(false)
+          setLoader(false)
         })
         .catch((error) => {
           const errorCode = error.code;
-          console.log(errorCode)
+          console.log(errorCode);
+          console.log(error);
           setLoader(false)
+
           if (errorCode.includes("auth/email-already-in-use")) {
             toast.error("Email Already Use")
           } else if (errorCode.includes("auth/weak-password")) {

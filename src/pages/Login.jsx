@@ -9,10 +9,15 @@ import { Link, useNavigate } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, sendPasswordResetEmail } from "firebase/auth";
 import { ToastContainer, toast } from 'react-toastify';
 import { Vortex } from 'react-loader-spinner'
+import { useDispatch } from 'react-redux'
+import { activeuserinfo } from '../slices/activeuserSlice';
+
+
 
 const Login = () => {
   const auth = getAuth();
   const navigate = useNavigate()
+  const dispatch=useDispatch()
 
   let [email, setEmail] = useState('')
   let [password, setPassword] = useState('')
@@ -71,7 +76,10 @@ const Login = () => {
         .then((userCredential) => {
 
     if (userCredential.user.emailVerified) {
-           toast.success("Login Successfull")
+           toast.success("Login Successfull");
+
+           dispatch(activeuserinfo(userCredential.user))
+
           setTimeout(() => {
             navigate('/home')
           }, 2000)

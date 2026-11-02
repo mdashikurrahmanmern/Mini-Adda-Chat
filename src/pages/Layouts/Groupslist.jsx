@@ -13,9 +13,9 @@ const Groupslist = () => {
 
              <div className='h-[222px] overflow-y-scroll '>
               <UserSection image={Roge} name='sdxffcgcgfg' bio='hhhhghghggg'/>
-              <UserSection image={Roge} name='Md Ashik' bio='hhhhghghggg'/>
-              <UserSection image={Roge} name='sdxffcgcgfg' bio='hhhhghghggg'/>
-              <UserSection image={Roge} name='Mst Mimma' bio='hhhhghghggg'/>
+               <UserSection image={Roge} name='BANGLADESH' bio='bangladesh'/>
+                <UserSection image={Roge} name='sdxffcgcgfg' bio='hhhhghghggg'/>
+               <UserSection image={Roge} name='sdxffcgcgfg' bio='hhhhghghggg'/>
              </div>
 
           </div>
