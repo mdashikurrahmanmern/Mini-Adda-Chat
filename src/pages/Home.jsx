@@ -5,6 +5,7 @@ import Friendlist from './Layouts/Friendlist';
 import UserList from './Layouts/UserList';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import Friendrequest from './Layouts/Friendrequest';
 
 
 const Home = () => {
@@ -35,6 +36,10 @@ const Home = () => {
 
         <Grid size={4}>
           <UserList/>
+        </Grid>
+
+        <Grid size={4}>
+          <Friendrequest/>
         </Grid>
         
     

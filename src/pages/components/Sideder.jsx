@@ -1,46 +1,65 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { IoHomeOutline, IoSettingsOutline } from "react-icons/io5";
 import { AiOutlineMessage } from "react-icons/ai";
 import { IoIosLogOut, IoMdNotificationsOutline } from "react-icons/io";
 import { MdCloudUpload } from "react-icons/md";
 import Image from './Image'
 import Apps from '../../assets/appl.png'
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux'
 import { getAuth, signOut } from "firebase/auth";
 import { toast } from 'react-toastify';
+import { getDatabase, ref, onValue } from "firebase/database";
 
 
 const Sideder = () => {
+  const db = getDatabase();
   const auth = getAuth();
-  let navigate=useNavigate()
+  let navigate = useNavigate()
   let location = useLocation()
   let active = location.pathname.replace("/", "");
   let data = useSelector((state => state.activeuser.value))
+  let [allusers,setAllUsers]=useState([])
   let handlelogout = () => {
     signOut(auth).then(() => {
       toast("Sign-out successful")
       navigate("/Login")
-      localStorage.removeItem("userinfo","")
+      localStorage.removeItem("userinfo", "")
     }).catch((error) => {
-       console.log(error.name)
+      console.log(error.name)
     });
   }
+
+
+  useEffect(() => {
+    const allusersRef = ref(db, 'allusers');
+    onValue(allusersRef, (snapshot) => {
+      let arr=[]
+     snapshot.forEach(item=>{
+      if(data.uid==item.val().userid){
+      arr.push(item.val());
+      }
+     })
+     setAllUsers(arr)
+    });
+  }, [])
 
 
 
   return (
     <div className='flex flex-col justify-around items-center w-[80%] h-[93vh] mx-auto mt-8  bg-[#3cda1d] rounded-[20px]'>
-      <div className='group relative w-23 h-23 rounded-full '>
+     {
+      allusers.map(item=>(
+       <div className='group relative w-23 h-23 rounded-full '>
         <Image className='w-23 h-23 rounded-full' src={Apps} />
         <div className='absolute top-0 left-0 w-full h-full rounded-full bg-transpatent group-hover:bg-black/30 duration-500 flex justify-center items-center'>
           <MdCloudUpload className='opacity-0 group-hover:opacity-100 text-white duration-500 text-3xl' />
         </div>
-
-        <h2 className='text-center font-semibold'>ASHIK</h2>
-
-
+        <h2 className='text-center font-semibold'>{item.name}</h2>
       </div>
+      ))
+     }
+
       <div className='flex flex-col gap-y-12'>
         <Link className={`relative after:absolute after:top-1/2 after:-left-[25%]  after:-translate-y-1/2 ${active == "home" && "after:bg-blue-500"} after:w-[130px] after:rounded-l-xl after:h-[70px] after:content-[""] after:-z-1 z-1    
       before:absolute before:top-1/2 before:left-[110px]  before:-translate-y-1/2 before:bg-[#3cda1d] before:w-[10px] before:rounded-l-xl before:h-[70px] before:content-[""]
