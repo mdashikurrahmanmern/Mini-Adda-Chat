@@ -10,7 +10,8 @@ const UserList = () => {
   const db = getDatabase();
   const [alluser,setAllUser]=useState([]);
   const data= useSelector(state=>state.activeuser.value)
-  console.log(data.uid);
+  let [friendrequestlist,setfriendrequestlist]=useState([])
+  //console.log(data.uid);
 
   useEffect(() => {
     const starCountRef = ref(db, 'allusers');
@@ -31,11 +32,22 @@ const UserList = () => {
    set(push(ref(db, 'friendrequestlist/')), {
 
     senderid:data.uid,
-    sendername:"md ashik",
+    sendername:data.displayName,
     receiverid:item.userid,
     receivername:item.name,
   });
    }
+
+    useEffect(() => {
+        const starCountRef = ref(db, 'friendrequestlist');
+        onValue(starCountRef, (snapshot) => {
+          let arr=[]
+        snapshot.forEach(item=>{
+            arr.push(item.val().senderid+item.val().receiverid)
+        })
+        setfriendrequestlist(arr);
+        }); 
+       }, [])
   
 
   return (
@@ -46,6 +58,11 @@ const UserList = () => {
         <div className='h-[222px] overflow-y-scroll '>
           {
              alluser.map(item=>(
+              friendrequestlist.includes(item.userid+data.uid) ||
+              friendrequestlist.includes(data.uid+item.userid)
+              ?
+              <UserSection btntext="Panding" image={Roge} name={item.name} bio={item.email}/>
+              :
               <UserSection onClickForAdd={()=>handleAdd(item)} btntext="Add" image={Roge} name={item.name} bio={item.email}/>
              ))
           }

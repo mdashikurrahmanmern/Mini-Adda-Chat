@@ -5,7 +5,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
 import { Link, useLoaderData, useNavigate } from 'react-router-dom';
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 import { ToastContainer, toast } from 'react-toastify';
 import { ThreeCircles } from 'react-loader-spinner'
 import { getDatabase, push, ref, set } from "firebase/database";
@@ -65,10 +65,14 @@ const Registration = () => {
           sendEmailVerification(auth.currentUser)
           toast("Registration Successfull");
 
-          set(push(ref(db, 'allusers/')), {
+          updateProfile(auth.currentUser, {
+            displayName: name, photoURL: "https://i.ibb.co.com/MkhgrpTQ/6310065260529915457.jpg"
+          }).then(()=>{
+            set(push(ref(db, 'allusers/')), {
             name: name,
             email: userCredential.user.email,
-           userid:userCredential.user.uid
+            userid: userCredential.user.uid
+          })
           })
 
 

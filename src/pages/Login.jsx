@@ -179,7 +179,7 @@ const Login = () => {
                 :
              <Button onClick={handleSignIn} className='py-3! w-[66%] mt-10! mb-5!' variant="contained">Sign up</Button>
             }
-            <p className='ml-[70px] text-sm text-[#03014C] font-normal font-opensans'>Already  have an account ? <span className='text-[#EA6C00] font-bold'><Link to="/">Sign up</Link></span></p>
+            <p className='ml-[70px] text-sm text-[#03014C] font-normal font-opensans'>Already  have an account ? <span className='text-[#EA6C00] font-bold'><Link to="/registration">Sign up</Link></span></p>
           </div>
         </div>
       </Grid>
